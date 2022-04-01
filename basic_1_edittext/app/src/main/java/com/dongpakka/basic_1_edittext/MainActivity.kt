@@ -1,5 +1,6 @@
 package com.dongpakka.basic_1_edittext
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        const val REQUEST = 0
+        const val ID = "ID"
+        const val PASSWD = "PASSWD"
+        const val RESULT = "RESULT"
+    }
 
     val TAG = "edittext::MainActivity"
 
@@ -55,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        editName.setOnFocusChangeListener { v, hasFocus ->
+        edtName.setOnFocusChangeListener { v, hasFocus ->
             val edt = v as EditText
             val color = if (hasFocus) Color.TRANSPARENT else Color.LTGRAY
             edt.setBackgroundColor(color)
@@ -66,13 +74,33 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                txtViewPassWd.text = s
+                txtMessage1.text = s
             }
 
             override fun afterTextChanged(p0: Editable?) {
             }
         })
+
+        btnLogin.setOnClickListener {
+            val i = Intent(this, ResultActivity::class.java)
+            i.putExtra(ID, edtName.text.toString())
+            i.putExtra(PASSWD, edtPassWD.text.toString())
+            startActivityForResult(i, REQUEST)
+        }
+
+
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode != REQUEST) return           // 방어코드
+        Log.i("MainActivity", "onActivityResult $data")
+
+        data?.getStringExtra(RESULT).let{
+            txtMessage1.text = it
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     fun loadImage(url: String) = Glide.with(this)
         .load(url)
         .into(imageView)
