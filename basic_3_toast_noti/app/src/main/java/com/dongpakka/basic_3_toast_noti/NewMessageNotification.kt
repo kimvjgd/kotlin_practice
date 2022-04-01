@@ -2,6 +2,7 @@ package com.dongpakka.basic_3_toast_noti
 
 import android.annotation.TargetApi
 import android.app.Notification
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
@@ -40,37 +41,37 @@ object NewMessageNotification {
                     // [TODO] 이곳에 원하는 Intent 만들기
                     // 일반적으로 원하는 Activity를 호출
                     Intent(context, MainActivity::class.java),
-                    PendingIntent.FLAG_MUTABLE
+                    PendingIntent.FLAG_UPDATE_CURRENT
                 )
             )
             // 터치시 자동삭제
             .setAutoCancel(true)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {       // 안드로이드 8(오레오부터)
+            val nm = context.getSystemService(
+                Context.NOTIFICATION_SERVICE) as NotificationManager
+            val mChannel = NotificationChannel(
+                "MY_NOTI_CHANNEL_ID",
+                "MY_NOTI_CHANNEL",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            nm.createNotificationChannel(mChannel)
+            builder.setChannelId("MY_NOTI_CHANNEL_ID")
+        }
         notify(context, builder.build())
     }
     // Notification 만들기
-    @TargetApi(Build.VERSION_CODES.ECLAIR)
     private fun notify(context: Context, notification: Notification){
         val nm = context.getSystemService(
             Context.NOTIFICATION_SERVICE
         ) as NotificationManager
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
             nm.notify(NOTIFICATION_TAG, 0, notification)
-        } else {
-            nm.notify(NOTIFICATION_TAG.hashCode(), notification)
-        }
     }
     // Notification 삭제하기
-    @TargetApi(Build.VERSION_CODES.ECLAIR)
     fun cancel(context: Context){
         val nm = context.getSystemService(
             Context.NOTIFICATION_SERVICE
         ) as NotificationManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
             nm.cancel(NOTIFICATION_TAG, 0)
-        }else {
-            nm.cancel(NOTIFICATION_TAG.hashCode())
-        }
     }
 }
