@@ -13,7 +13,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.d(TAG, "${nLineNumber++} onCreate")
+
+        if(savedInstanceState != null) {
+            nLineNumber = savedInstanceState.getInt("LINE_NUMBER", 0)
+        }
+
+       Log.d(TAG, "${nLineNumber++} onCreate ${savedInstanceState}")
     }
 
     override fun onRestart() {
@@ -24,10 +29,12 @@ class MainActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         Log.d(TAG, "${nLineNumber++} onSaveInstanceState")
+        outState.putInt("LiNE_NUMBER", nLineNumber)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
+        nLineNumber = savedInstanceState.getInt("LINE_NUMBER", 0)
         Log.d(TAG, "${nLineNumber++} onRestoreInstanceState")
     }
 
