@@ -2,6 +2,7 @@ package com.dongpakka.basic_3_addactivitiy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_main3.*
 
 class MainActivity3 : AppCompatActivity() {
@@ -12,3 +13,4 @@ class MainActivity3 : AppCompatActivity() {
         textView2.text = text
     }
 }
+
