@@ -41,27 +41,13 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+
     private fun searchImage(keyword: String) {
         KakaoImageSearch.search(keyword) {
             imageList.addAll(it!!.documents)
             imageListView.adapter?.notifyDataSetChanged()
         }
     }
-//        KakaoImageSearch.getService()
-//            .requestSearchImage(keyword = keyword, page = 1)
-//            .enqueue(object : Callback<Image> {
-//                override fun onFailure(call: Call<Image>, t: Throwable) {
-//                    Log.e("----", t.toString())
-//                }
-//
-//                override fun onResponse(call: Call<Image>, response: Response<Image>) {
-//                    if (response.isSuccessful) {
-//                        val image = response.body()
-//                        imageList.addAll(image!!.documents)
-//                        imageListView.adapter?.notifyDataSetChanged()
-//                    }
-//                }
-//            })
     fun onItemClick(doc: Document) {
 
     }
